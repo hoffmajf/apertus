@@ -1,0 +1,21 @@
+[Unit]
+Description=Apertus serial->MQTT bridge (venv)
+After=network.target apertus-detect.service
+Wants=apertus-detect.service
+
+[Service]
+Type=simple
+User=homeassistant
+Group=homeassistant
+WorkingDirectory=/opt/apertus
+EnvironmentFile=/etc/apertus/apertus.env
+ExecStart=/opt/apertus/venv/bin/python /opt/apertus/apertus_serial_mqtt_bridge.py --serial ${APERTUS_SERIAL} --baud ${APERTUS_BAUD} --mqtt-host ${APERTUS_MQTT_HOST} --mqtt-port ${APERTUS_MQTT_PORT} --mqtt-user "${APERTUS_MQTT_USER}" --mqtt-pass "${APERTUS_MQTT_PASS}"
+Restart=always
+RestartSec=5
+LimitNOFILE=4096
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=apertus-bridge
+
+[Install]
+WantedBy=multi-user.target

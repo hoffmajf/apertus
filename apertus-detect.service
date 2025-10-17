@@ -1,0 +1,14 @@
+[Unit]
+Description=Apertus serial autodetect service
+Wants=dev-serial.slice
+After=systemd-udev-settle.service syslog.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+ExecStart=/usr/local/bin/apertus-detect-serial.py
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
